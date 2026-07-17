@@ -1,17 +1,29 @@
 {
-  "users": [
-    {
-      "id": 1,
-      "name": "Gabriel",
-      "email": "gabriel@gmail.com",
-      "projects": []
-    },
-    {
-      "id": null,
-      "name": "james",
-      "email": "james@gmail.com",
-      "projects": [
-      ]
-    }
-  ]
+    "users": [
+        {
+            "id": 1,
+            "name": "Gabriel",
+            "email": "gabriel@gmail.com",
+            "projects": []
+        },
+        {
+            "id": 2,
+            "name": "james",
+            "email": "james@gmail.com",
+            "projects": [
+                {
+                    "title": "cli tool",
+                    "description": "Python based task management cli tool",
+                    "due_date": "22",
+                    "tasks": [
+                        {
+                            "title": "set up project",
+                            "status": true,
+                            "assigned_to": "james"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
