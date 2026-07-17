@@ -4,6 +4,7 @@ class Project:
         self.description = description
         self.due_date = due_date
         self.tasks = []
+        self.owner = None
     
     def __repr__(self):
         return self.title
@@ -18,3 +19,4 @@ class Project:
     
     def add_task(self, task):
         self.tasks.append(task)
+        task.assigned_to = self.title

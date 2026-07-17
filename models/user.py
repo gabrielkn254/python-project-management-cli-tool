@@ -32,5 +32,6 @@ class User:
             "projects": self.projects
         }
     
-    def add_project(self, project):
+    def assign_project(self, project):
         self.projects.append(project)
+        project.owner = self
