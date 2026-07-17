@@ -35,17 +35,22 @@ def add_project(args):
     user = next((u for u in users if u.name.lower() == args.user.lower()), None)
 
     # Check if user exists
-    if not users or user:
+    if not user:
         print(f"User: '{args.user}' doesn't exists \nCreate user first.")
         return
     
     # Check if project already exists
     project = next((p for p in user.projects if p.title.lower() == args.title.lower()), None)
+
     if not project:
-        project = Project(args.title, args.description, args.due_date, user.id)
+        project = Project(args.title, args.description, args.due_date)
         user.assign_project(project)
 
         print(f"Project: '{args.title}' assigned to '{user.name}'")
+        print(user.projects)
+        save_db(users)
+        return
+    
     print(f"Project: '{args.title}' already exists")
 
 
@@ -63,7 +68,7 @@ def list_projects(args):
         for project in user.projects:
             print(f"    Project: {project.title} | Due: {project.due_date} | '{project.description}'")
             for task in project.tasks:
-                print(f"        Task: {task.title} | Status: {"Completed" if task.status else "Pending"}  |  Assignee: {task.assigned_to}")
+                print(f"        Task: {task.title} | Status: {'Completed' if task.status else 'Pending'}  |  Assignee: {task.assigned_to}")
 
 # ACTION: add_task
 def add_task(args):
