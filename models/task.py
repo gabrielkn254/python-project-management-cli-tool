@@ -1,8 +1,8 @@
 class Task:
-    def __init__(self, title, assigned_to):
+    def __init__(self, title):
         self.title = title
         self.status = False
-        self.assigned_to = assigned_to
+        self.assigned_to = None
     
     def __repr__(self):
         return self.title
