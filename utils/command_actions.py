@@ -64,11 +64,11 @@ def list_projects(args):
         return
     print("Listing all users")
     for user in users:
-        print(f"User: [{user.name}]")
+        print(f"User: [{user.name}] Projects:")
         for project in user.projects:
-            print(f"    Project: {project.title} | Due: {project.due_date} | '{project.description}'")
-            for task in project.tasks:
-                print(f"        Task: {task.title} | Status: {'Completed' if task.status else 'Pending'}  |  Assignee: {task.assigned_to}")
+            print(f"    {project.title.upper()} | Due: {project.due_date} | '{project.description}'\n       Tasks:")
+            for index, task in enumerate(project.tasks, start=1):
+                print(f"        {index}. {task.title} | Status: {'Completed' if task.status else 'Pending'}  |  Assigned_to: {task.assigned_to}")
 
 # ACTION: add_task
 def add_task(args):
@@ -83,16 +83,17 @@ def add_task(args):
 
     # Check if project exists
     if not project:
-        print(f"Project: '{args.project}' doesn't exists")
+        print(f"Project: [{args.project}] doesn't exists")
         return
     
     # Check if Task exists
     task_exist = any(t.title.lower() == args.task.lower() for t in project.tasks)
     if not task_exist:
         project.add_task(Task(args.task, user.name))
-        print(f"Added Task: '{args.task} to {user.name}: {args.project}")
+        print(f"Added Task: [{args.task}] to [{user.name}: {args.project}]")
+        save_db(users)
     
-    print(f"Task: '{args.task}' already exists in Project: '{args.project}'")
+    print(f"Task: [{args.task}] already exists in Project: [{args.project}]")
 
 
 # ACTION: complete_task
@@ -109,7 +110,7 @@ def complete_task(args):
 
     # Check if project exists
     if not project:
-        print(f"Project: '{args.project}' doesn't exists")
+        print(f"Project: [{args.project}] doesn't exists")
         return
     
     # Check if Task exists
@@ -117,6 +118,11 @@ def complete_task(args):
 
     # Complete task
     if task:
+        if task.status:
+            print(f"Task: [{args.task}] is already completed")
+            return
         task.complete_task()
+        save_db(users)
+        return
     
-    print(f"Task: '{args.task}' doesn't exists in Project: '{args.project}'")
+    print(f"Task: [{args.task}] doesn't exists in Project: [{args.project}]")

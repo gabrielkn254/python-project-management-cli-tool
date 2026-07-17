@@ -23,4 +23,4 @@ def save_db(users: list):
     }
 
     with open(DB_PATH, "w") as file:
-        json.dump(data, file, indent=2)
+        json.dump(data, file, indent=4)
