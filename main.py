@@ -1,6 +1,7 @@
 import argparse
-from models import User, Project, Task
-from utils.cli_functions import add_user, list_users, add_project, list_projects, add_task, complete_task
+
+from utils.command_actions import add_user, list_users, add_project, list_projects, add_task, complete_task
+
 
 def main():
     parser = argparse.ArgumentParser(description="Project Management CLI Tool")
@@ -32,7 +33,7 @@ def main():
     # command: add-task
     add_task_parser = subparsers.add_parser("add-task", help="Add tasks to a specific project")
     add_task_parser.add_argument("--project", required=True, help="Project title to assign a task")
-    add_task_parser.add_argument("--title", required=True, help="Task name/title")
+    add_task_parser.add_argument("--task", required=True, help="Task name/title")
     add_task_parser.set_defaults(func=add_task)
 
     # command: complete-task

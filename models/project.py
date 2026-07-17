@@ -32,4 +32,3 @@ class Project:
     
     def add_task(self, task):
         self.tasks.append(task)
-        task.assigned_to = self.title

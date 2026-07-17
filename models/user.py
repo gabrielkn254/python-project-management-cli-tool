@@ -14,6 +14,9 @@ class User(Person):
             "projects": self.projects
         }
     
+    def __repr__(self):
+        return self.name
+    
     @classmethod
     def from_dict(cls, data: dict) -> "User":
         projects = [Project.from_dict(p) for p in data.get("projects", [])]
