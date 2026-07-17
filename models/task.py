@@ -1,8 +1,8 @@
 class Task:
-    def __init__(self, title):
+    def __init__(self, title, assigned_to):
         self.title = title
         self.status = False
-        self.assigned_to = None
+        self.assigned_to = assigned_to
     
     def __repr__(self):
         return self.title
@@ -24,4 +24,4 @@ class Task:
     
     def complete_task(self):
         self.status = True
-        print(f"Task: {self.title} marked complete")
+        print(f"Task: '{self.title}' marked complete")
