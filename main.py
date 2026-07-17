@@ -27,7 +27,6 @@ def main():
 
     # command: list-projects
     list_projects_parser = subparsers.add_parser("list-projects", help="List all projects for all or assigned to specific user")
-    list_projects_parser.add_argument("--user", required=False, help="Specific user's name")
     list_projects_parser.set_defaults(func=list_projects)
 
     # command: add-task
