@@ -1,6 +1,12 @@
 from models import User, Project, Task
 from .storage import save_db, load_db
 
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
+table = Table()
+
 # ACTION: add_user
 def add_user(args):
     users = load_db()
@@ -14,19 +20,26 @@ def add_user(args):
         users.append(user)
         save_db(users)
 
-        print(f"Created User: {args.name}")
+        console.print(f" ✔ Created User: {args.name}", style="green")
         return
-    print(f"User: {args.name} ({args.email}) already exists.")
+    console.print(f"➖ User: {args.name} ({args.email}) already exists.", style="orange")
 
 # ACTION: list_users
 def list_users(args):
     users = load_db()
     if not users:
-        print("Database is empty!")
+        console.print("Database is empty!", style="red")
         return
-    print("Listing all users")
+
+    # Create table
+    table = Table(title="Users")
+    table.add_column("ID", justify="center", style="cyan", no_wrap=True)
+    table.add_column("Name", style="magenta")
+    table.add_column("Email", justify="center", style="green")
+    
     for user in users:
-        print(f"User: {user.name} ({user.email})")
+        table.add_row(str(user.id), user.name, user.email)
+    console.print(table)
 
 # ACTION: add_project
 def add_project(args):
@@ -36,7 +49,7 @@ def add_project(args):
 
     # Check if user exists
     if not user:
-        print(f"User: '{args.user}' doesn't exists \nCreate user first.")
+        console.print(f"❌ User: '{args.user}' doesn't exists \nCreate user first.", style="red")
         return
     
     # Check if project already exists
@@ -46,12 +59,11 @@ def add_project(args):
         project = Project(args.title, args.description, args.due_date)
         user.assign_project(project)
 
-        print(f"Project: '{args.title}' assigned to '{user.name}'")
-        print(user.projects)
+        console.print(f" ✔  Project: '{args.title}' assigned to '{user.name}'", style="green")
         save_db(users)
         return
     
-    print(f"Project: '{args.title}' already exists")
+    console.print(f" ❌ Project: '{args.title}' already exists", style="orange")
 
 
 # ACTION: list_projects
@@ -60,15 +72,27 @@ def list_projects(args):
 
 
     if not users:
-        print("Database is empty!")
+        console.print(" ❌ Database is empty!", style="red")
         return
-    print("Listing all users")
+    
+    # Create table
+    table = Table(title="Projects")
+    table.add_column("Project Title", style="cyan")
+    table.add_column("Description", style="magenta")
+    table.add_column("Due Date", justify="center", style="green")
+    table.add_column("Tasks", justify="center", style="yellow")
+    
+    console.print("Listing all users", style="blue")
     for user in users:
         print(f"User: [{user.name}] Projects:")
         for project in user.projects:
-            print(f"    {project.title.upper()} | Due: {project.due_date} | '{project.description}'\n       Tasks:")
-            for index, task in enumerate(project.tasks, start=1):
-                print(f"        {index}. {task.title} | Status: {'Completed' if task.status else 'Pending'}  |  Assigned_to: {task.assigned_to}")
+            
+            tasks = [f" {index}. {task.title} | Status: {'Completed' if task.status else 'Pending'}  |  Assigned_to: {task.assigned_to}" for index, task in enumerate(project.tasks, start=1)]
+
+            table.add_row(project.title.upper(), project.description, project.due_date, tasks[0] if tasks else "No tasks")
+
+            console.print(table)
+
 
 # ACTION: add_task
 def add_task(args):
@@ -83,17 +107,17 @@ def add_task(args):
 
     # Check if project exists
     if not project:
-        print(f"Project: [{args.project}] doesn't exists")
+        console.print(f"❌ Project: [{args.project}] doesn't exists", style="red")
         return
     
     # Check if Task exists
     task_exist = any(t.title.lower() == args.task.lower() for t in project.tasks)
     if not task_exist:
         project.add_task(Task(args.task, user.name))
-        print(f"Added Task: [{args.task}] to [{user.name}: {args.project}]")
+        console.print(f" ✔ Added Task: [{args.task}] to [{user.name}: {args.project}]", style="green")
         save_db(users)
     
-    print(f"Task: [{args.task}] already exists in Project: [{args.project}]")
+    console.print(f" ➖ Task: [{args.task}] already exists in Project: [{args.project}]", style="orange")
 
 
 # ACTION: complete_task
@@ -110,7 +134,7 @@ def complete_task(args):
 
     # Check if project exists
     if not project:
-        print(f"Project: [{args.project}] doesn't exists")
+        console.print(f"❌ Project: [{args.project}] doesn't exists", style="red")
         return
     
     # Check if Task exists
@@ -119,10 +143,11 @@ def complete_task(args):
     # Complete task
     if task:
         if task.status:
-            print(f"Task: [{args.task}] is already completed")
+            console.print(f"➖ Task: [{args.task}] is already completed", style="orange")
             return
         task.complete_task()
         save_db(users)
+        console.print(f"✔ Task: '{task.title}' marked complete", style="green")
         return
     
-    print(f"Task: [{args.task}] doesn't exists in Project: [{args.project}]")
+    console.print(f"❌ Task: [{args.task}] doesn't exists in Project: [{args.project}]", style="red")

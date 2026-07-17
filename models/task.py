@@ -24,4 +24,3 @@ class Task:
     
     def complete_task(self):
         self.status = True
-        print(f"Task: '{self.title}' marked complete")
