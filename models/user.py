@@ -24,3 +24,13 @@ class User:
         if "@" not in value and "." not in value:
             raise ValueError("Invalid email format")
         self._email = value
+    
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "email": self.email,
+            "projects": self.projects
+        }
+    
+    def add_project(self, project):
+        self.projects.append(project)
