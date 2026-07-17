@@ -10,7 +10,7 @@ class Task:
     def to_dict(self):
         return {
             "title": self.title,
-            "status": "Completed" if self.status else "Incomplete",
+            "status": self.status,
             "assigned_to": self.assigned_to
         }
     

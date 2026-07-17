@@ -1,11 +1,17 @@
 {
-    "users": [
-
-    ],
-    "projects":[
-
-    ],
-    "tasks":[
-        
-    ]
+  "users": [
+    {
+      "id": 1,
+      "name": "Gabriel",
+      "email": "gabriel@gmail.com",
+      "projects": []
+    },
+    {
+      "id": null,
+      "name": "james",
+      "email": "james@gmail.com",
+      "projects": [
+      ]
+    }
+  ]
 }

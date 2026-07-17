@@ -22,7 +22,7 @@ def main():
     add_project_parser.add_argument("--user", required=True, help="User's name assign a project")    
     add_project_parser.add_argument("--title", required=True, help="Project title")
     add_project_parser.add_argument("--description", required=True, help="Project description")
-    add_project_parser.add_argument("--due_date", required=True, help="Project due date")
+    add_project_parser.add_argument("--due_date", required=False, help="Project due date")
     add_project_parser.set_defaults(func=add_project)
 
     # command: list-projects
